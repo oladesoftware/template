@@ -1,0 +1,31 @@
+services:
+  app:
+    build: ./Dockerfile
+    hostname: app
+    container_name: app-template
+    ports:
+      - "8991:80"
+    networks:
+      - net.template.back
+      - net.template.front
+
+  db:
+    build: mariadb
+    hostname: db
+    container_name: db-template
+    environment:
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD={MARIADB_ROOT_PASSWORD}
+    volumes:
+      - "template-data:/var/lib/mysql"
+    networks:
+      - net.template.back
+
+networks:
+  net.template.front:
+  net.template.back:
+
+volumes:
+  template-data:
